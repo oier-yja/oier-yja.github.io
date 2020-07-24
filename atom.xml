@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://yja.hualian.host</id>
+    <id>https://yja.hualian.host</id>
     <title>Yja&apos;s blog</title>
-    <updated>2020-07-24T02:56:29.737Z</updated>
+    <updated>2020-07-24T03:00:49.545Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://yja.hualian.host"/>
-    <link rel="self" href="http://yja.hualian.host/atom.xml"/>
+    <link rel="alternate" href="https://yja.hualian.host"/>
+    <link rel="self" href="https://yja.hualian.host/atom.xml"/>
     <subtitle>稻花香里说丰年，听取WA声一片</subtitle>
-    <logo>http://yja.hualian.host/images/avatar.png</logo>
-    <icon>http://yja.hualian.host/favicon.ico</icon>
+    <logo>https://yja.hualian.host/images/avatar.png</logo>
+    <icon>https://yja.hualian.host/favicon.ico</icon>
     <rights>All rights reserved 2020, Yja&apos;s blog</rights>
     <entry>
         <title type="html"><![CDATA[Hello jump!]]></title>
-        <id>http://yja.hualian.host/post/hello-jump/</id>
-        <link href="http://yja.hualian.host/post/hello-jump/">
+        <id>https://yja.hualian.host/post/hello-jump/</id>
+        <link href="https://yja.hualian.host/post/hello-jump/">
         </link>
         <updated>2020-07-24T02:25:43.000Z</updated>
         <content type="html"><![CDATA[<p>当你看见这篇文章时你已是一个成熟的jp了。</p>
