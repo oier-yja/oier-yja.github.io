@@ -50,12 +50,94 @@
         <main id="main" class="site-main" role="main">
             <article id="post-1270" class="post-1270 post type-post status-publish format-standard hentry category-90 category-129 tag-149">
                 <header class="entry-header">
-                    <h1 class="entry-title">Hello jump!</h1>
-                    <p class="entry-census">发布于 2020-07-24</p>
+                    <h1 class="entry-title">[状压dp]传球游戏之最小总代价</h1>
+                    <p class="entry-census">发布于 2020-07-26</p>
                     <hr>
                 </header>
                 <div class="neko">
-                    <p>当你看见这篇文章时你已是一个成熟的jp了。</p>
+                    <h3 id="描述">描述</h3>
+<p>n个人在做传递物品的游戏,编号为1-n。游戏规则是这样的：开始时物品可以在任意一人手上，他可把物品传递给<br>
+其他人中的任意一位；下一个人可以传递给未接过物品的任意一人。即物品只能经过同一个人一次，而且每次传递<br>
+过程都有一个代价；不同的人传给不同的人的代价值之间没有联系；求当物品经过所有n个人后，整个过程的总代<br>
+价是多少。<br>
+输入</p>
+<p>第一行为n,表示共有n个人（16&gt;=n&gt;=2）；<br>
+以下为n*n的矩阵，第i+1行、第j列表示物品从编号为i的人传递到编号为j的人所花费的代价，<br>
+特别的有第i+1行、第i列为-1（因为物品不能自己传给自己），其他数据均为正整数(&lt;=10000)。<br>
+输出</p>
+<p>一个数，为最小的代价总和。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>2<br>
+-1 9794<br>
+2724 –1</p>
+<h3 id="输出">输出</h3>
+<p>2724</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>从任意一个点开始不重复走过n个点，在任意一个点停下求所走过最小代价。</p>
+<p>跟售<a href="http://forioi.com/contest/problem?id=23&amp;pid=20">货员的难题</a>有点像似，只是可以从任意一个点出发经过n个点后在任意一个点停下，所以可以省略售货员的难题最后统计答案时加上1到i的1的距离的操作</p>
+<h2 id="解题思路">解题思路</h2>
+<p>设dp[i][j]表示当状态为i(把i用二进制展开，第k位的0或1就表示第k个人是否传过)时，球正传在第j个人的手上。<br>
+设接下来要传的人编号为k。</p>
+<ul>
+<li>
+<p>对于当前状态i，从1一直枚举到(1&lt;&lt;n-1)(即所有人都传过)</p>
+</li>
+<li>
+<p>对于球正在手上的人j，从1枚举到n，但前提是j是在状态i里面的<s>枚举的已经传了的人i状态里面都没有j，而j手上又有球，传个寂寞</s>。所以要进行判断</p>
+<ul>
+<li>如果i&amp;(1&lt;&lt;j-1)，i的第j位为1，j在i里面表示传过，则再进行下一步操作</li>
+</ul>
+</li>
+<li>
+<p>对于接下来要传到的人k，从1枚举到n，但k没在i状态里面，如果k已经传过再传一次就与题意相违背，则要进行判断。</p>
+<ul>
+<li>如果!(1&amp;(1&lt;&lt;k-1))，i的第k为不为1，k还没传过，则进行下一步操作</li>
+</ul>
+</li>
+<li>
+<p>对于传完球的状态，从j已经到k了，原本的状态i得进行改变，将第二进制展开的第k位变为1以表示k已经传过，同样，原本的dp[i][j]中，j要变为k，表示当前已经在第k个人手上。</p>
+<ul>
+<li>进行i|(1&lt;&lt;k-1)操作，使得i的二进制展开第k位变成1而不改变其他位的值</li>
+</ul>
+<p>设g[i][j]表示为i传到j的代价<br>
+则可得状态转移方程：<br>
+<span class='katex-error' title='ParseError: KaTeX parse error: Expected &#039;EOF&#039;, got &#039;&amp;&#039; at position 63: …]+g[j][k]);  (i&amp;̲(1&lt;&lt;j-1) &amp;&amp; !(1…'>dp[i|(1&lt;&lt;k-1)][k]=min(dp[i|(1&lt;&lt;k-1)][k],dp[i][j]+g[j][k]);  (i&amp;(1&lt;&lt;j-1) &amp;&amp; !(1&amp;(1&lt;&lt;k-1))</span></p>
+</li>
+</ul>
+<h2 id="由于最后球可以在任意一个人手上要用for循环遍历一遍dp1n-1j比出最小值">由于最后球可以在任意一个人手上，要用for循环遍历一遍dp[1&lt;&lt;n-1][j]比出最小值</h2>
+<p>奉上代码</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int g[20][20],n,dp[1&lt;&lt;16][20];
+int main(){
+	
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		for(int j=1;j&lt;=n;j++)
+			scanf(&quot;%d&quot;,&amp;g[i][j]);
+			
+	memset(dp,63,sizeof(dp));
+	for(int i=1;i&lt;=n;i++)
+		dp[1&lt;&lt;i-1][i]=0;
+	
+	for(int i=1;i&lt;=(1&lt;&lt;n)-1;i++)
+		for(int j=1;j&lt;=n;j++)
+			if(i&amp;(1&lt;&lt;j-1))
+				for(int k=1;k&lt;=n;k++)
+					if(!(i&amp;(1&lt;&lt;k-1)))
+						dp[i|(1&lt;&lt;k-1)][k]=min(dp[i|(1&lt;&lt;k-1)][k],dp[i][j]+g[j][k]);
+	
+	int ans=1e9;
+	for(int i=1;i&lt;=n;i++){
+		ans=min(ans,dp[(1&lt;&lt;n)-1][i]);
+	}
+	printf(&quot;%d&quot;,ans);
+	
+	return 0;
+}
+</code></pre>
 
                 </div>
             </article>
@@ -65,16 +147,22 @@
         <div class="mdui-container">
             <div class="mdui-row">
                 
-                <a href="https://yja.hualian.host/post/shou-huo-yuan-de-nan-ti/" class="mdui-ripple mdui-color-theme mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left">
+                <a href="https://yja.hualian.host/post/shu-xing-dpmei-you-shang-si-de-wu-hui/" class="mdui-ripple mdui-color-theme mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left">
                     <div class="doc-footer-nav-text">
                         <i class="mdui-icon material-icons">arrow_back</i>
                         <span class="doc-footer-nav-direction mdui-hidden-xs-down">上一篇文章</span>
-                        <div class="doc-footer-nav-chapter mdui-hidden-xs-down">[状压dp]售货员的难题</div>
+                        <div class="doc-footer-nav-chapter mdui-hidden-xs-down">[树形dp]没有上司的舞会</div>
                     </div>
                 </a>
                 
                 
-                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
+                <a href="https://yja.hualian.host/post/shou-huo-yuan-de-nan-ti/" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
+                    <div class="doc-footer-nav-text">
+                        <i class="mdui-icon material-icons">arrow_forward</i>
+                        <span class="doc-footer-nav-direction">下一篇文章</span>
+                        <div class="doc-footer-nav-chapter">[状压dp]售货员的难题</div>
+                    </div>
+                </a>
                 
             </div>
         </div>

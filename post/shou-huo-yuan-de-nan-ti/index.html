@@ -50,12 +50,80 @@
         <main id="main" class="site-main" role="main">
             <article id="post-1270" class="post-1270 post type-post status-publish format-standard hentry category-90 category-129 tag-149">
                 <header class="entry-header">
-                    <h1 class="entry-title">Hello jump!</h1>
-                    <p class="entry-census">发布于 2020-07-24</p>
+                    <h1 class="entry-title">[状压dp]售货员的难题</h1>
+                    <p class="entry-census">发布于 2020-07-26</p>
                     <hr>
                 </header>
                 <div class="neko">
-                    <p>当你看见这篇文章时你已是一个成熟的jp了。</p>
+                    <p>售货员的难题</p>
+<h3 id="描述">描述</h3>
+<p>某乡有n个村庄(1&lt;n&lt;15)，有一个售货员，他要到各个村庄去售货，各村庄之间的路程s(0&lt;s&lt;1000)是已知的，且A村到B村与B村到A村的路大多不同。为了提高效率，他从商店出发到每个村庄一次，然后返回商店所在的村，假设商店所在的村庄为1，他不知道选择什么样的路线才能使所走的路程最短。请你帮他选择一条最短的路。<br>
+输入<br>
+村庄数n和各村之间的路程(均是整数)。<br>
+输出<br>
+最短的路程<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>3        {村庄数}<br>
+0 2 1    {村庄1到各村的路程}<br>
+1 0 2    {村庄2到各村的路程}<br>
+2 1 0    {村庄3到各村的路程}</p>
+<h3 id="输出">输出</h3>
+<p>3</p>
+<hr>
+<h3 id="题目大意">题目大意</h3>
+<p>n个点，每个点之间都有连边。<br>
+求从点1出发不重复经过所有点的路程之和最小。</p>
+<h3 id="解题思路">解题思路</h3>
+<p>考虑到n范围很小，求经过n个点的最短路径长度，可以使用状压dp来做<br>
+设dp[i][j]表示i状态下(把i用二进制展开，如110，第2位为1就表示第2个点已经走过)，j为当前走到的点，dp所存的就是最路程chang长度。<br>
+题目所求的就是dp<a href="%E5%A6%82%E5%BD%93n=3%E6%97%B6%EF%BC%8C%E8%BF%90%E7%AE%97%E5%BE%97%E7%9A%84%E7%BB%93%E6%9E%9C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B1%95%E5%BC%80%E5%B0%B1%E6%98%AF1000-1=111">(1&lt;&lt;n)-1</a>[1]的值<br>
+(注意位运算运算级别最低，在同高级运算符合一起时候理清预算顺序打上括号)</p>
+<p>而在状态转移时，要考虑已走点的状态，当前所在的点，接下来要去的点。</p>
+<ul>
+<li>对于已走点的状态i，直接从001枚举到111</li>
+<li>对于当前所在的点j，从1开始枚举到n，但不一定j就在已走点的状i态里面，所以要用位运算进行判断。
+<ul>
+<li>如果1&lt;&lt;(j-1)&amp;i，i状态里面第j位为1，则j在i状态里面，可以进行进一步的讨论</li>
+</ul>
+</li>
+<li>对于接下要求的点k，从1开始枚举到n，但k必须不能走过(走过了再走一遍就会与题意相违背)，所以也要判断。
+<ul>
+<li>如果!(1&lt;&lt;(k-1)&amp;i)，i状态里面第k位不为1，则k不在i状态里面，可以进行进一步讨论<br>
+而还有要考虑的一点：<br>
+特殊的点1是起始位置会经过一遍，在走完n-1个点后有回到点1 再经过一次。所以不能直接输出dp[(1&lt;&lt;n)-1][1]。而要再开个for循环遍历一遍dp[(1&lt;&lt;n)-1][i(2~n)]加上i到1的路程，在里面打擂求出最小的路程长度。</li>
+</ul>
+<hr>
+奉上代码</li>
+</ul>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int n,g[20][20],dp[20][1&lt;&lt;16];
+int main(){
+scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		for(int j=1;j&lt;=n;j++)
+			scanf(&quot;%d&quot;,&amp;g[i][j]);
+			
+	memset(dp,63,sizeof(dp));
+	dp[1][1]=0;
+
+	for(int i=0;i&lt;=(1&lt;&lt;n)-1;i++)
+		for(int j=1;j&lt;=n;j++)
+			if(!(i &amp; (1&lt;&lt;(j-1))))
+				for(int k=1;k&lt;=n;k++)
+					if(i &amp; (1&lt;&lt;(k-1)))
+						dp[j][i | (1&lt;&lt;(j-1))]=min(dp[j][i | (1&lt;&lt;(j-1))],dp[k][i]+g[k][j]);
+						
+	int ans=1e9;
+	for(int i=2;i&lt;=n;i++){
+		ans=min(ans,dp[i][(1&lt;&lt;n)-1]+g[i][1]);
+	}
+	
+	printf(&quot;%d&quot;,ans);
+	return 0;
+}
+</code></pre>
 
                 </div>
             </article>
@@ -65,16 +133,22 @@
         <div class="mdui-container">
             <div class="mdui-row">
                 
-                <a href="https://yja.hualian.host/post/shou-huo-yuan-de-nan-ti/" class="mdui-ripple mdui-color-theme mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left">
+                <a href="https://yja.hualian.host/post/zhuang-ya-dpchuan-qiu-you-xi-zhi-zui-xiao-zong-dai-jie/" class="mdui-ripple mdui-color-theme mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left">
                     <div class="doc-footer-nav-text">
                         <i class="mdui-icon material-icons">arrow_back</i>
                         <span class="doc-footer-nav-direction mdui-hidden-xs-down">上一篇文章</span>
-                        <div class="doc-footer-nav-chapter mdui-hidden-xs-down">[状压dp]售货员的难题</div>
+                        <div class="doc-footer-nav-chapter mdui-hidden-xs-down">[状压dp]传球游戏之最小总代价</div>
                     </div>
                 </a>
                 
                 
-                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
+                <a href="https://yja.hualian.host/post/hello-jump/" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
+                    <div class="doc-footer-nav-text">
+                        <i class="mdui-icon material-icons">arrow_forward</i>
+                        <span class="doc-footer-nav-direction">下一篇文章</span>
+                        <div class="doc-footer-nav-chapter">Hello jump!</div>
+                    </div>
+                </a>
                 
             </div>
         </div>

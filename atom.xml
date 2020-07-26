@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yja.hualian.host</id>
     <title>Yja&apos;s blog</title>
-    <updated>2020-07-24T03:03:10.708Z</updated>
+    <updated>2020-07-26T12:25:36.024Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yja.hualian.host"/>
     <link rel="self" href="https://yja.hualian.host/atom.xml"/>
@@ -10,6 +10,285 @@
     <logo>https://yja.hualian.host/images/avatar.png</logo>
     <icon>https://yja.hualian.host/favicon.ico</icon>
     <rights>All rights reserved 2020, Yja&apos;s blog</rights>
+    <entry>
+        <title type="html"><![CDATA[[树形dp]没有上司的舞会]]></title>
+        <id>https://yja.hualian.host/post/shu-xing-dpmei-you-shang-si-de-wu-hui/</id>
+        <link href="https://yja.hualian.host/post/shu-xing-dpmei-you-shang-si-de-wu-hui/">
+        </link>
+        <updated>2020-07-26T12:02:09.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="描述">描述</h3>
+<p>有个公司要举行一场晚会。<br>
+为了能玩得开心，公司领导决定：如果邀请了某个人，那么一定不会邀请他的上司<br>
+（上司的上司，上司的上司的上司……都可以邀请）。</p>
+<h3 id="题目">题目</h3>
+<p>每个参加晚会的人都能为晚会增添一些气氛，求一个邀请方案，使气氛值的和最大。<br>
+输入</p>
+<p>第1行一个整数N（1&lt;=N&lt;=6000）表示公司的人数。<br>
+接下来N行每行一个整数。第i行的数表示第i个人的气氛值x(-128&lt;=x&lt;=127)。<br>
+接下来每行两个整数L，K。表示第K个人是第L个人的上司。<br>
+输入以0 0结束。<br>
+输出</p>
+<p>一个数，最大的气氛值和。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>7<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1 3<br>
+2 3<br>
+6 4<br>
+7 4<br>
+4 5<br>
+3 5<br>
+0 0</p>
+<h4 id="输出">输出</h4>
+<p>5</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>n个点，每个点有一个气氛值，当选了第i个点时就不能选它的父亲节点，但是可以选它父亲的父亲，求其能选出气氛值之和最大为多少。</p>
+<hr>
+<h2 id="解题思路">解题思路</h2>
+<p>像这种有主从关系的，不难想到图或树，而根据题意可以判断出这个图是没有环的，上司的上司不可能是上司的下属吧，那就可以直接上树。</p>
+<p>注意上司和下属的关系是决定了这棵树是单向边的，题目也没说明那个一定是根节点，所以不能随便从一个点开始搜，先预处理出一个没有入度的点以其为根节点再开始搜<br>
+设bool数组vis[i]为i是否有上司，用一个for循环遍历一遍找到一个vis值为零的开始搜即可</p>
+<p>设dp[u][j(j只为1或0)]为当第u个人来(j为1)与不来(j为0)时所能产生的最大气氛值。<br>
+图的遍历一遍使用dfs,设i的儿子为v，根据题意上司来了其下属就不会来，下属来了其上司就不会来。<br>
+但上司不来下属来与不来都可以<br>
+可得状态转移方程:<br>
+dp[u][0]+=max(dp[v][1],dp[v][0])；<br>
+设w[i]为第i个人来能带来的气氛值<br>
+dp[u][1]=w[i];<br>
+dp[u][1]+=dp[v][0];</p>
+<p>设root为树的根节点<br>
+最后输出dp[root][0]和dp[root][1]中最大的值即可。</p>
+<hr>
+<p>奉上代码</p>
+<pre><code class="language-c">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int n,w[6005],tot,head[12005],dp[6005][2];
+bool vis[6005];
+struct node{
+	int nex;
+	int to;
+}g[12005];
+void add(int u,int v){
+	g[++tot].nex=head[u];
+	g[tot].to=v;
+	head[u]=tot;
+}
+void dfs(int u){
+	
+	dp[u][0]=0;
+	dp[u][1]=w[u];
+	int v=0;
+	for(int i=head[u];i;i=g[i].nex)
+		v=g[i].to,
+		dfs(v),
+		dp[u][0]+=max(dp[v][1],dp[v][0]),
+		dp[u][1]+=dp[v][0];
+		
+	return ;
+}
+int main(){
+	
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d&quot;,&amp;w[i]);
+	
+	int u=-1,v=-1;
+	while(u!=0 &amp;&amp; v!=0)
+		scanf(&quot;%d %d&quot;,&amp;u,&amp;v),
+		add(v,u),
+		vis[u]=1;
+	
+	int root=0;
+	for(int i=1;i&lt;=n;i++)
+		if(!vis[i]){
+			root=i;
+			break;
+		}
+	
+	dfs(root);
+	printf(&quot;%d&quot;,max(dp[root][1],dp[root][0]));
+	
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[状压dp]传球游戏之最小总代价]]></title>
+        <id>https://yja.hualian.host/post/zhuang-ya-dpchuan-qiu-you-xi-zhi-zui-xiao-zong-dai-jie/</id>
+        <link href="https://yja.hualian.host/post/zhuang-ya-dpchuan-qiu-you-xi-zhi-zui-xiao-zong-dai-jie/">
+        </link>
+        <updated>2020-07-26T11:30:02.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="描述">描述</h3>
+<p>n个人在做传递物品的游戏,编号为1-n。游戏规则是这样的：开始时物品可以在任意一人手上，他可把物品传递给<br>
+其他人中的任意一位；下一个人可以传递给未接过物品的任意一人。即物品只能经过同一个人一次，而且每次传递<br>
+过程都有一个代价；不同的人传给不同的人的代价值之间没有联系；求当物品经过所有n个人后，整个过程的总代<br>
+价是多少。<br>
+输入</p>
+<p>第一行为n,表示共有n个人（16&gt;=n&gt;=2）；<br>
+以下为n*n的矩阵，第i+1行、第j列表示物品从编号为i的人传递到编号为j的人所花费的代价，<br>
+特别的有第i+1行、第i列为-1（因为物品不能自己传给自己），其他数据均为正整数(&lt;=10000)。<br>
+输出</p>
+<p>一个数，为最小的代价总和。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>2<br>
+-1 9794<br>
+2724 –1</p>
+<h3 id="输出">输出</h3>
+<p>2724</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>从任意一个点开始不重复走过n个点，在任意一个点停下求所走过最小代价。</p>
+<p>跟售<a href="http://forioi.com/contest/problem?id=23&amp;pid=20">货员的难题</a>有点像似，只是可以从任意一个点出发经过n个点后在任意一个点停下，所以可以省略售货员的难题最后统计答案时加上1到i的1的距离的操作</p>
+<h2 id="解题思路">解题思路</h2>
+<p>设dp[i][j]表示当状态为i(把i用二进制展开，第k位的0或1就表示第k个人是否传过)时，球正传在第j个人的手上。<br>
+设接下来要传的人编号为k。</p>
+<ul>
+<li>
+<p>对于当前状态i，从1一直枚举到(1&lt;&lt;n-1)(即所有人都传过)</p>
+</li>
+<li>
+<p>对于球正在手上的人j，从1枚举到n，但前提是j是在状态i里面的<s>枚举的已经传了的人i状态里面都没有j，而j手上又有球，传个寂寞</s>。所以要进行判断</p>
+<ul>
+<li>如果i&amp;(1&lt;&lt;j-1)，i的第j位为1，j在i里面表示传过，则再进行下一步操作</li>
+</ul>
+</li>
+<li>
+<p>对于接下来要传到的人k，从1枚举到n，但k没在i状态里面，如果k已经传过再传一次就与题意相违背，则要进行判断。</p>
+<ul>
+<li>如果!(1&amp;(1&lt;&lt;k-1))，i的第k为不为1，k还没传过，则进行下一步操作</li>
+</ul>
+</li>
+<li>
+<p>对于传完球的状态，从j已经到k了，原本的状态i得进行改变，将第二进制展开的第k位变为1以表示k已经传过，同样，原本的dp[i][j]中，j要变为k，表示当前已经在第k个人手上。</p>
+<ul>
+<li>进行i|(1&lt;&lt;k-1)操作，使得i的二进制展开第k位变成1而不改变其他位的值</li>
+</ul>
+<p>设g[i][j]表示为i传到j的代价<br>
+则可得状态转移方程：<br>
+<span class='katex-error' title='ParseError: KaTeX parse error: Expected &#039;EOF&#039;, got &#039;&amp;&#039; at position 63: …]+g[j][k]);  (i&amp;̲(1&lt;&lt;j-1) &amp;&amp; !(1…'>dp[i|(1&lt;&lt;k-1)][k]=min(dp[i|(1&lt;&lt;k-1)][k],dp[i][j]+g[j][k]);  (i&amp;(1&lt;&lt;j-1) &amp;&amp; !(1&amp;(1&lt;&lt;k-1))</span></p>
+</li>
+</ul>
+<h2 id="由于最后球可以在任意一个人手上要用for循环遍历一遍dp1n-1j比出最小值">由于最后球可以在任意一个人手上，要用for循环遍历一遍dp[1&lt;&lt;n-1][j]比出最小值</h2>
+<p>奉上代码</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int g[20][20],n,dp[1&lt;&lt;16][20];
+int main(){
+	
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		for(int j=1;j&lt;=n;j++)
+			scanf(&quot;%d&quot;,&amp;g[i][j]);
+			
+	memset(dp,63,sizeof(dp));
+	for(int i=1;i&lt;=n;i++)
+		dp[1&lt;&lt;i-1][i]=0;
+	
+	for(int i=1;i&lt;=(1&lt;&lt;n)-1;i++)
+		for(int j=1;j&lt;=n;j++)
+			if(i&amp;(1&lt;&lt;j-1))
+				for(int k=1;k&lt;=n;k++)
+					if(!(i&amp;(1&lt;&lt;k-1)))
+						dp[i|(1&lt;&lt;k-1)][k]=min(dp[i|(1&lt;&lt;k-1)][k],dp[i][j]+g[j][k]);
+	
+	int ans=1e9;
+	for(int i=1;i&lt;=n;i++){
+		ans=min(ans,dp[(1&lt;&lt;n)-1][i]);
+	}
+	printf(&quot;%d&quot;,ans);
+	
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[状压dp]售货员的难题]]></title>
+        <id>https://yja.hualian.host/post/shou-huo-yuan-de-nan-ti/</id>
+        <link href="https://yja.hualian.host/post/shou-huo-yuan-de-nan-ti/">
+        </link>
+        <updated>2020-07-26T09:20:25.000Z</updated>
+        <content type="html"><![CDATA[<p>售货员的难题</p>
+<h3 id="描述">描述</h3>
+<p>某乡有n个村庄(1&lt;n&lt;15)，有一个售货员，他要到各个村庄去售货，各村庄之间的路程s(0&lt;s&lt;1000)是已知的，且A村到B村与B村到A村的路大多不同。为了提高效率，他从商店出发到每个村庄一次，然后返回商店所在的村，假设商店所在的村庄为1，他不知道选择什么样的路线才能使所走的路程最短。请你帮他选择一条最短的路。<br>
+输入<br>
+村庄数n和各村之间的路程(均是整数)。<br>
+输出<br>
+最短的路程<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>3        {村庄数}<br>
+0 2 1    {村庄1到各村的路程}<br>
+1 0 2    {村庄2到各村的路程}<br>
+2 1 0    {村庄3到各村的路程}</p>
+<h3 id="输出">输出</h3>
+<p>3</p>
+<hr>
+<h3 id="题目大意">题目大意</h3>
+<p>n个点，每个点之间都有连边。<br>
+求从点1出发不重复经过所有点的路程之和最小。</p>
+<h3 id="解题思路">解题思路</h3>
+<p>考虑到n范围很小，求经过n个点的最短路径长度，可以使用状压dp来做<br>
+设dp[i][j]表示i状态下(把i用二进制展开，如110，第2位为1就表示第2个点已经走过)，j为当前走到的点，dp所存的就是最路程chang长度。<br>
+题目所求的就是dp<a href="%E5%A6%82%E5%BD%93n=3%E6%97%B6%EF%BC%8C%E8%BF%90%E7%AE%97%E5%BE%97%E7%9A%84%E7%BB%93%E6%9E%9C%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%B1%95%E5%BC%80%E5%B0%B1%E6%98%AF1000-1=111">(1&lt;&lt;n)-1</a>[1]的值<br>
+(注意位运算运算级别最低，在同高级运算符合一起时候理清预算顺序打上括号)</p>
+<p>而在状态转移时，要考虑已走点的状态，当前所在的点，接下来要去的点。</p>
+<ul>
+<li>对于已走点的状态i，直接从001枚举到111</li>
+<li>对于当前所在的点j，从1开始枚举到n，但不一定j就在已走点的状i态里面，所以要用位运算进行判断。
+<ul>
+<li>如果1&lt;&lt;(j-1)&amp;i，i状态里面第j位为1，则j在i状态里面，可以进行进一步的讨论</li>
+</ul>
+</li>
+<li>对于接下要求的点k，从1开始枚举到n，但k必须不能走过(走过了再走一遍就会与题意相违背)，所以也要判断。
+<ul>
+<li>如果!(1&lt;&lt;(k-1)&amp;i)，i状态里面第k位不为1，则k不在i状态里面，可以进行进一步讨论<br>
+而还有要考虑的一点：<br>
+特殊的点1是起始位置会经过一遍，在走完n-1个点后有回到点1 再经过一次。所以不能直接输出dp[(1&lt;&lt;n)-1][1]。而要再开个for循环遍历一遍dp[(1&lt;&lt;n)-1][i(2~n)]加上i到1的路程，在里面打擂求出最小的路程长度。</li>
+</ul>
+<hr>
+奉上代码</li>
+</ul>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int n,g[20][20],dp[20][1&lt;&lt;16];
+int main(){
+scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		for(int j=1;j&lt;=n;j++)
+			scanf(&quot;%d&quot;,&amp;g[i][j]);
+			
+	memset(dp,63,sizeof(dp));
+	dp[1][1]=0;
+
+	for(int i=0;i&lt;=(1&lt;&lt;n)-1;i++)
+		for(int j=1;j&lt;=n;j++)
+			if(!(i &amp; (1&lt;&lt;(j-1))))
+				for(int k=1;k&lt;=n;k++)
+					if(i &amp; (1&lt;&lt;(k-1)))
+						dp[j][i | (1&lt;&lt;(j-1))]=min(dp[j][i | (1&lt;&lt;(j-1))],dp[k][i]+g[k][j]);
+						
+	int ans=1e9;
+	for(int i=2;i&lt;=n;i++){
+		ans=min(ans,dp[i][(1&lt;&lt;n)-1]+g[i][1]);
+	}
+	
+	printf(&quot;%d&quot;,ans);
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello jump!]]></title>
         <id>https://yja.hualian.host/post/hello-jump/</id>

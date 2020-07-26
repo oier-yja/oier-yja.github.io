@@ -50,12 +50,114 @@
         <main id="main" class="site-main" role="main">
             <article id="post-1270" class="post-1270 post type-post status-publish format-standard hentry category-90 category-129 tag-149">
                 <header class="entry-header">
-                    <h1 class="entry-title">Hello jump!</h1>
-                    <p class="entry-census">发布于 2020-07-24</p>
+                    <h1 class="entry-title">[树形dp]没有上司的舞会</h1>
+                    <p class="entry-census">发布于 2020-07-26</p>
                     <hr>
                 </header>
                 <div class="neko">
-                    <p>当你看见这篇文章时你已是一个成熟的jp了。</p>
+                    <h3 id="描述">描述</h3>
+<p>有个公司要举行一场晚会。<br>
+为了能玩得开心，公司领导决定：如果邀请了某个人，那么一定不会邀请他的上司<br>
+（上司的上司，上司的上司的上司……都可以邀请）。</p>
+<h3 id="题目">题目</h3>
+<p>每个参加晚会的人都能为晚会增添一些气氛，求一个邀请方案，使气氛值的和最大。<br>
+输入</p>
+<p>第1行一个整数N（1&lt;=N&lt;=6000）表示公司的人数。<br>
+接下来N行每行一个整数。第i行的数表示第i个人的气氛值x(-128&lt;=x&lt;=127)。<br>
+接下来每行两个整数L，K。表示第K个人是第L个人的上司。<br>
+输入以0 0结束。<br>
+输出</p>
+<p>一个数，最大的气氛值和。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>7<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1 3<br>
+2 3<br>
+6 4<br>
+7 4<br>
+4 5<br>
+3 5<br>
+0 0</p>
+<h4 id="输出">输出</h4>
+<p>5</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>n个点，每个点有一个气氛值，当选了第i个点时就不能选它的父亲节点，但是可以选它父亲的父亲，求其能选出气氛值之和最大为多少。</p>
+<hr>
+<h2 id="解题思路">解题思路</h2>
+<p>像这种有主从关系的，不难想到图或树，而根据题意可以判断出这个图是没有环的，上司的上司不可能是上司的下属吧，那就可以直接上树。</p>
+<p>注意上司和下属的关系是决定了这棵树是单向边的，题目也没说明那个一定是根节点，所以不能随便从一个点开始搜，先预处理出一个没有入度的点以其为根节点再开始搜<br>
+设bool数组vis[i]为i是否有上司，用一个for循环遍历一遍找到一个vis值为零的开始搜即可</p>
+<p>设dp[u][j(j只为1或0)]为当第u个人来(j为1)与不来(j为0)时所能产生的最大气氛值。<br>
+图的遍历一遍使用dfs,设i的儿子为v，根据题意上司来了其下属就不会来，下属来了其上司就不会来。<br>
+但上司不来下属来与不来都可以<br>
+可得状态转移方程:<br>
+dp[u][0]+=max(dp[v][1],dp[v][0])；<br>
+设w[i]为第i个人来能带来的气氛值<br>
+dp[u][1]=w[i];<br>
+dp[u][1]+=dp[v][0];</p>
+<p>设root为树的根节点<br>
+最后输出dp[root][0]和dp[root][1]中最大的值即可。</p>
+<hr>
+<p>奉上代码</p>
+<pre><code class="language-c">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int n,w[6005],tot,head[12005],dp[6005][2];
+bool vis[6005];
+struct node{
+	int nex;
+	int to;
+}g[12005];
+void add(int u,int v){
+	g[++tot].nex=head[u];
+	g[tot].to=v;
+	head[u]=tot;
+}
+void dfs(int u){
+	
+	dp[u][0]=0;
+	dp[u][1]=w[u];
+	int v=0;
+	for(int i=head[u];i;i=g[i].nex)
+		v=g[i].to,
+		dfs(v),
+		dp[u][0]+=max(dp[v][1],dp[v][0]),
+		dp[u][1]+=dp[v][0];
+		
+	return ;
+}
+int main(){
+	
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d&quot;,&amp;w[i]);
+	
+	int u=-1,v=-1;
+	while(u!=0 &amp;&amp; v!=0)
+		scanf(&quot;%d %d&quot;,&amp;u,&amp;v),
+		add(v,u),
+		vis[u]=1;
+	
+	int root=0;
+	for(int i=1;i&lt;=n;i++)
+		if(!vis[i]){
+			root=i;
+			break;
+		}
+	
+	dfs(root);
+	printf(&quot;%d&quot;,max(dp[root][1],dp[root][0]));
+	
+	return 0;
+}
+</code></pre>
 
                 </div>
             </article>
@@ -65,16 +167,16 @@
         <div class="mdui-container">
             <div class="mdui-row">
                 
-                <a href="https://yja.hualian.host/post/shou-huo-yuan-de-nan-ti/" class="mdui-ripple mdui-color-theme mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left">
+                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
+                
+                
+                <a href="https://yja.hualian.host/post/zhuang-ya-dpchuan-qiu-you-xi-zhi-zui-xiao-zong-dai-jie/" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
                     <div class="doc-footer-nav-text">
-                        <i class="mdui-icon material-icons">arrow_back</i>
-                        <span class="doc-footer-nav-direction mdui-hidden-xs-down">上一篇文章</span>
-                        <div class="doc-footer-nav-chapter mdui-hidden-xs-down">[状压dp]售货员的难题</div>
+                        <i class="mdui-icon material-icons">arrow_forward</i>
+                        <span class="doc-footer-nav-direction">下一篇文章</span>
+                        <div class="doc-footer-nav-chapter">[状压dp]传球游戏之最小总代价</div>
                     </div>
                 </a>
-                
-                
-                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
                 
             </div>
         </div>
