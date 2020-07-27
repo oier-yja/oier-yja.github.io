@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yja&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <link rel="stylesheet" href="/media/css/post.css">
+    <link rel="stylesheet" href="/media/live2d/css/live2d.css" />
+    
+</head>
+<body class=" mdui-appbar-with-toolbar  mdui-theme-primary-pink mdui-theme-accent-pink">
+<header class="mdui-toolbar mdui-color-pink mdui-appbar-fixed mdui-appbar-scroll-toolbar-hide" style="z-index: 1000">
+    <a href="javascript:;" mdui-drawer="{target: '#left-drawer',overlay:true}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+    <span class="mdui-typo-title">Yja&#39;s blog</span>
+    <div class="mdui-toolbar-spacer"></div>
+<!--    <a href="javascript:history.go(0);" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+</header>
+
+<div class="mdui-drawer mdui-color-white mdui-drawer-full-height mdui-drawer-close" id="left-drawer">
+    <ul class="mdui-list">
+        <li class="mdui-subheader">菜单</li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/" class="mdui-list-item-content">首页</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/archives" class="mdui-list-item-content">归档</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/tags" class="mdui-list-item-content">标签</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/post/about" class="mdui-list-item-content">关于</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div id="content" class="site-content">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+            <article id="post-1270" class="post-1270 post type-post status-publish format-standard hentry category-90 category-129 tag-149">
+                <header class="entry-header">
+                    <h1 class="entry-title">[动态规划]Cow Pie Treasures</h1>
+                    <p class="entry-census">发布于 2020-07-27</p>
+                    <hr>
+                </header>
+                <div class="neko">
+                    <h3 id="description">Description</h3>
+<p>最近，奶牛们热衷于把金币包在面粉里，然后把它们烤成馅饼。第i块馅饼中含有Ni(1&lt;=Ni&lt;=25)块金币，并且，这个数字被醒目地标记在馅饼表面。 奶牛们把所有烤好的馅饼在草地上排成了一个R行(1&lt;=R&lt;=100)C列(1&lt;=C&lt;=100)的矩阵。你现在站在坐标为(1,1)的馅饼边上，当然，你可以拿到那块馅饼里的所有金币。你必须从现在的位置，走到草地的另一边，在坐标为(R,C)的馅饼旁边停止走动。每做一次移动，你必须走到下一列的某块馅饼旁边，并且，行数的变动不能超过1（也就是说，如果现在你站在坐标为(r,c)的馅饼边上，下一步你可以走到坐标为(r-1,c+1),(r,c+1),或者(r+1,c+1)的馅饼旁边）。当你从一块馅饼边经过，你就可以拿走馅饼里所有的金币。当然啦，你一定不会愿意因半路离开草地而失去唾手可得的金币，但，最终你一定得停在坐标为(R,C)的馅饼旁边。 现在，你拿到了一张标记着馅饼矩阵中，每一块馅饼含金币数量的表格。那么，按照规则，你最多可以拿到多少金币呢？ 比方说，奶牛们把馅饼排成如下的矩阵，矩阵中的数字表示该位置的馅饼中含金币的数量：<br>
+6 5 3 7 9 2 7<br>
+2 4 3 5 6 8 6<br>
+4 9 9 9 1 5 8<br>
+以下是条合法的路线<br>
+<img src="https://i.loli.net/2020/07/27/yLuw1Dj6b7Qhnqo.gif" alt="image001.gif" loading="lazy"></p>
+<p>按上述的路线进行走动，一共可以获得6+4+9+9+6+5+8=47个金币．按照规则，在这个矩阵中最多可以得到50个金币，路线如下图所示：<br>
+<img src="https://i.loli.net/2020/07/27/deXYwVx9OQuyqkI.gif" alt="image002.gif" loading="lazy"></p>
+<p>Input<br>
+第1行: 两个用空格隔开的整数，R和C<br>
+第2..R+1行: 每行包含C个用空格隔开的正整数，依次表示一行中从左往右各个馅饼里金币的数量<br>
+Output<br>
+输出一个正整数，表示你所能收集到的最大金币数目</p>
+<h3 id="sample-input">Sample Input</h3>
+<p>3 7<br>
+6 5 3 7 9 2 7<br>
+2 4 3 5 6 8 6<br>
+4 9 9 9 1 5 8</p>
+<h3 id="sample-output">Sample Output</h3>
+<p>50</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>一个n*m的地图从地图左上角走到右下角，每次可以往右，右上，右下走，在每个格子都有一定的金币，每经过一个格子就可以获得格子里面的金币，求从左上角走到左下角可以获得的最大金币的数量。</p>
+<hr>
+<h2 id="解题思路">解题思路</h2>
+<p>根据题目描述可以知道n和m的值比较小，而且牛是不可能往左走的，所以不用考虑重复走的问题，只用一个劲往右莽就行了。<br>
+这道题可以采用bfs，但<s>dp不香吗</s>dp求解速度更快代码更短。</p>
+<p>设dp[i][j]为从1,1走到i,j所得到的最大金币数，x[i][j]为i,j的格子里面金币的数量。而奶牛只能往右，右上，右下走，对应i行数就不变或，-1，+1，而列数j都要加1向右移动。<br>
+易得状态转移方程:<br>
+dp[i][j+1]=max(dp[i][j+1],dp[i][j]+x[i][j+1]);<br>
+dp[i+1][j+1]=max(dp[i+1][j+1],dp[i][j]+x[i+1][j+1]);<br>
+dp[i-1][j+1]=max(dp[i-1][j+1],dp[i][j]+x[i-1][j+1]);</p>
+<p>那么直接套个双重for循环i从1到n，j从1到m求出dp[i][j]最终输出dp[n][m]就可以了。<br>
+看到这里就恭喜你可以<br>
+<strong>WA</strong>掉这道题了。</p>
+<p>循环是从左上到右下的，那么以题为例，你的dp[i][j]更新值时的路径就是<img src="https://i.loli.net/2020/07/27/7pqmRjBDCQPVlG9.png" alt="无标题.png" loading="lazy"><br>
+那么当你在更新别的dp值时候就会<br>
+<img src="https://cdn.jsdelivr.net/gh/pic-cdn/cdn2@latest/2020/07/27/8747665c54e8a9853e17c37711256646.png" alt="" loading="lazy"><br>
+对右，右下的更新都没问题，因为还没走到那里。但对右上的更新就不太妙了。右上的元素是已经枚举处理过了，从正在走的点去更新已经走过的点就会出大问题，动态规划其中的要求就是无后效性，即当前的值不会去影响之前已经算好了的值。<br>
+当前的值是之前算出来的，而现在又去更新之前的值，所以当前的值也得改变，那所以之前的值又要改变...<s>无限套娃</s></p>
+<p>要解决这个问题，改变循环枚举的方式，从原本的i行遍历j列，到j列遍历i行，那么循环遍历的路径就会如下图所示:<br>
+<img src="https://cdn.jsdelivr.net/gh/pic-cdn/cdn2@latest/2020/07/27/1fc5e1bd8dcffcda48d6e08ff6e6540c.png" alt="" loading="lazy"><br>
+对于任意一个点所更新其他点的情况就会这样<br>
+<img src="https://cdn.jsdelivr.net/gh/pic-cdn/cdn2@latest/2020/07/27/e000b6767583c7d8d011cc9708d7c515.png" alt="" loading="lazy"><br>
+而那些点都是还没走过的，并且那些点都是不可能走到现在的点（题目说了奶牛只能往右走 ），所以也就不会影响当前的值。<br>
+那么只需要把原来的</p>
+<pre><code class="language-c">for(int i=1;i&lt;=n;i++){
+    for(int j=1;j&lt;=m;j++){
+        ...(转移方程)
+    }
+}
+</code></pre>
+<p>改成</p>
+<pre><code class="language-c">for(int j=1;j&lt;=m;j++){
+    for(int i=1;i&lt;=n;i++){
+        ...(转移方程)
+    }
+}
+</code></pre>
+<p>终于可以AC掉这道题了</p>
+<p>提交，评测，刷新<strong>WA</strong>掉了〒▽〒</p>
+<hr>
+<h2 id="最终解法">最终解法</h2>
+<p>题目说了奶牛最多就只能往右下走，所以地图上游戏点是无论如何也走不到的，最多也就能这样<br>
+<img src="https://cdn.jsdelivr.net/gh/pic-cdn/cdn2@latest/2020/07/27/32dfef5213fb8a16a656419b08e8df22.png" alt="" loading="lazy"><br>
+那些被涂掉的点是无论如何也都走不到的，而在循环时那些点还是会被遍历并更新其他值，根据上图显而易见i要&lt;=j才有可能走到。，所以在循环时候加上一个判断就可以啦</p>
+<hr>
+<p>奉上代码</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int n,m,x[105][105],dp[105][105];
+int main(){
+	scanf(&quot;%d %d&quot;,&amp;n,&amp;m);
+	for(int i=1;i&lt;=n;i++){
+		for(int j=1;j&lt;=m;j++){
+			scanf(&quot;%d&quot;,&amp;x[i][j]);
+		}
+	}
+	dp[1][1]=x[1][1];
+	for(int j=1;j&lt;=m;j++){
+		for(int i=1;i&lt;=n &amp;&amp; i&lt;=j;i++){
+			dp[i][j+1]=max(dp[i][j+1],dp[i][j]+x[i][j+1]);
+			dp[i+1][j+1]=max(dp[i+1][j+1],dp[i][j]+x[i+1][j+1]);
+			dp[i-1][j+1]=max(dp[i-1][j+1],dp[i][j]+x[i-1][j+1]);
+		}
+	}
+	printf(&quot;%d&quot;,dp[n][m]);
+	return 0;
+}
+</code></pre>
+<p>别往下看了，不会再WA了</p>
+<p>真的</p>
+
+                </div>
+            </article>
+        </main>
+    </div>
+    <div class="doc-footer-nav mdui-color-theme">
+        <div class="mdui-container">
+            <div class="mdui-row">
+                
+                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
+                
+                
+                <a href="https://yja.hualian.host/post/shu-xing-dpmei-you-shang-si-de-wu-hui/" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
+                    <div class="doc-footer-nav-text">
+                        <i class="mdui-icon material-icons">arrow_forward</i>
+                        <span class="doc-footer-nav-direction">下一篇文章</span>
+                        <div class="doc-footer-nav-chapter">[树形dp]没有上司的舞会</div>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    <br>
+    
+    <div class="comment"></div>
+</div>
+<footer class="mdui-container footer ">
+    <div class="head_card-offset"></div>
+    <div class="mdui-row mdui-row-gapless">
+        <div class="k-container">
+            <img width="100%" src="/media/img/skirt.png">
+        </div>
+    </div>
+
+    <div class="site-info">
+        Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+    </div>
+</footer>
+<div id="landlord" style="left:5px;bottom:0px;">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="500" height="560" class="live2d"></canvas>
+    <div class="live_talk_input_body">
+        <div class="live_talk_input_name_body">
+            <input name="name" type="text" class="live_talk_name white_input" id="AIuserName" autocomplete="off" placeholder="你的名字" />
+        </div>
+        <div class="live_talk_input_text_body">
+            <input name="talk" type="text" class="live_talk_talk white_input" id="AIuserText" autocomplete="off" placeholder="要和我聊什么呀？"/>
+            <button type="button" class="live_talk_send_btn" id="talk_send">发送</button>
+        </div>
+    </div>
+    <input name="live_talk" id="live_talk" value="1" type="hidden" />
+    <div class="live_ico_box">
+        <div class="live_ico_item type_info" id="showInfoBtn"></div>
+        <div class="live_ico_item type_talk" id="showTalkBtn"></div>
+        <div class="live_ico_item type_music" id="musicButton"></div>
+        <div class="live_ico_item type_youdu" id="youduButton"></div>
+        <div class="live_ico_item type_quit" id="hideButton"></div>
+        <input name="live_statu_val" id="live_statu_val" value="0" type="hidden" />
+        <audio src="" style="display:none;" id="live2d_bgm" data-bgm="0" preload="none"></audio>
+        <input name="live2dBGM" value="https://img.apa70.com/123.mp3" type="hidden">
+        <input name="live2dBGM" value="https://img.apa70.com/123.mp3" type="hidden">
+        <input id="duType" value="douqilai,l2d_caihong" type="hidden">
+    </div>
+</div>
+<div id="open_live2d">召唤伊斯特瓦尔</div>
+<script>
+    var message_Path = '/media/live2d/';//资源目录，如果目录不对请更改
+    var talkAPI = "";//如果有类似图灵机器人的聊天接口请填写接口路径
+</script>
+<!--<script src="/media/js/jquery-3.3.1.min.js"></script>-->
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/media/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/media/live2d/js/message.js"></script>
+
+</body>
+<script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    $('.comment').bind('DOMNodeInserted',()=>{
+        $('.comment').unbind()
+
+        $('.vbtn').addClass(' mdui-btn mdui-color-theme-accent mdui-ripple')
+    })
+
+    let valine = new Valine({
+        el: '.comment',
+        
+        
+        
+        path: window.location.pathname,
+        pageSize: 30,
+        avatar:'mm',
+        notify:true
+    })
+</script>
+</html>
