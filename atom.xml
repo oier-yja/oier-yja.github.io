@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yja.hualian.host</id>
     <title>Yja&apos;s blog</title>
-    <updated>2020-07-27T11:47:18.805Z</updated>
+    <updated>2020-07-27T11:49:12.874Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yja.hualian.host"/>
     <link rel="self" href="https://yja.hualian.host/atom.xml"/>
@@ -10,17 +10,6 @@
     <logo>https://yja.hualian.host/images/avatar.png</logo>
     <icon>https://yja.hualian.host/favicon.ico</icon>
     <rights>All rights reserved 2020, Yja&apos;s blog</rights>
-    <entry>
-        <title type="html"><![CDATA[yjacbb]]></title>
-        <id>https://yja.hualian.host/post/yjacbb/</id>
-        <link href="https://yja.hualian.host/post/yjacbb/">
-        </link>
-        <updated>2020-07-27T11:40:52.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="yja我吃你马我yja">YJA我吃你马，我YJA</h1>
-<figure data-type="image" tabindex="1"><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1595860248310&amp;di=534c637cad599fae28d4b286b46bf29e&amp;imgtype=0&amp;src=http%3A%2F%2Fwx2.sinaimg.cn%2Flarge%2F006m97Kgly1fxp5ryur2wj30hk0hkadu.jpg" alt="" loading="lazy"></figure>
-<h1 id="下次再来看yja吃不饱我yja直接马上到你家门口">下次再来看YJA吃不饱我YJA直接马上到你家门口</h1>
-]]></content>
-    </entry>
     <entry>
         <title type="html"><![CDATA[[动态规划]Cow Pie Treasures]]></title>
         <id>https://yja.hualian.host/post/dong-tai-gui-hua-cow-pie-treasures/</id>
