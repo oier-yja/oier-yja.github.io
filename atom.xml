@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yja.hualian.host</id>
     <title>Yja&apos;s blog</title>
-    <updated>2020-07-30T12:02:35.331Z</updated>
+    <updated>2020-07-31T11:00:30.957Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yja.hualian.host"/>
     <link rel="self" href="https://yja.hualian.host/atom.xml"/>
@@ -10,6 +10,194 @@
     <logo>https://yja.hualian.host/images/avatar.png</logo>
     <icon>https://yja.hualian.host/favicon.ico</icon>
     <rights>All rights reserved 2020, Yja&apos;s blog</rights>
+    <entry>
+        <title type="html"><![CDATA[[图论]最小生成树模板题 | 最小生成树]]></title>
+        <id>https://yja.hualian.host/post/tu-lun-zui-xiao-sheng-cheng-shu-mo-ban-ti-or-zui-xiao-sheng-cheng-shu/</id>
+        <link href="https://yja.hualian.host/post/tu-lun-zui-xiao-sheng-cheng-shu-mo-ban-ti-or-zui-xiao-sheng-cheng-shu/">
+        </link>
+        <updated>2020-07-31T09:22:01.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="描述">描述</h3>
+<p>给出一个数字N，代表有N个点，然后给出这N个点的坐标。求一个最小生成树将这N个点连通起来。<br>
+这里两点间的距离为欧几里德距离<br>
+输入</p>
+<p>整个测试有多组数据<br>
+对于每组数据<br>
+第一行给出数字N，N&lt;=1000<br>
+接下来N行给点的坐标x,y.-10000 &lt;= X,Y &lt;= 10000<br>
+整个测试以0代表结束<br>
+输出</p>
+<p>输出见样例。注意：如果是多组输出数据，多组输出数据之间多一个空行。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>5<br>
+0 0<br>
+0 1<br>
+1 1<br>
+1 0<br>
+0.5 0.5<br>
+0</p>
+<h3 id="输出">输出</h3>
+<p>Case #1:<br>
+The minimal distance is: 2.83</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>如题，及求最小生成树，给一个n个点带边权的无向图，选n-1条边将图上所有点连接起来并使得树上所有边权之和最小。</p>
+<h2 id="解题思路">解题思路</h2>
+<p>对于求最小生成树问题，一般有<strong>prim</strong>和<strong>kruska</strong>l两种算法，本面着重讲prim算法。<br>
+prim的算法核心是维护<strong>最小生成树的一部分</strong>，从刚开始的一个点开始逐渐扩展到n个点，在每次扩展时，从已经求出最小生成树的一部分中找一个点u，从还未被选入最小生成树中的点中找一个点v，如果两点之间有连边，从<strong>未被选入最小生成树点的集合</strong>删去v，把v点加入<strong>已经生成的最小生成树的集合</strong>里面，并累加两点之间连边的权值。</p>
+<p>但如果用上面的朴素算法，每次访问1到n点中，又要从那个点开始向能走到的n个点的点进行打擂求出边权最小的加入，这要两个for循环n次才能完成，时间复杂度<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+<p><s>这么慢那学个什么，肯定是要学最快最优的那种啦</s></p>
+<p>每次对于当前处理点i，要循环n次求出离它边权最小值的点，所以可以直接用堆来维护边权最小点集合，边权越小越优先处理，这样可以保证第一次算完所有点的就一定是最小生成树<br>
+采用堆优化后时间复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>g</mi><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(nlongn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></p>
+<hr>
+<p>奉上代码</p>
+<pre><code class="language-c">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+double x[1005],y[1005];
+int n;
+bool vis[1005];
+struct node{
+	double dist;
+	int u;
+	node(double dist_,int u_){
+		dist=dist_;
+		u=u_;
+	}
+	bool operator &lt; (const node &amp;a) const {
+		return a.dist&lt;dist;
+	}
+};
+void prim(){
+	memset(vis,0,sizeof(vis));
+	double ans=0.0;
+	priority_queue&lt;node&gt; q;
+	q.push(node(0.0,1));
+	while(!q.empty()){
+		int u=q.top().u;
+		double dist=q.top().dist;
+		q.pop();
+		if(vis[u])
+			continue;
+		vis[u]=1;
+		ans+=dist;
+		for(int i=2;i&lt;=n;i++){
+			if(!vis[i]){
+				q.push(node(sqrt(pow(x[i]-x[u],2)*1.0+pow(y[i]-y[u],2)*1.0),i));
+			}
+		}
+	}
+	printf(&quot;%.2f&quot;,ans);
+	return ;
+}
+int main(){
+	int t=1;
+	while(1){
+		scanf(&quot;%d&quot;,&amp;n);
+		if(n==0){
+			return 0;
+		}
+		for(int i=1;i&lt;=n;i++){
+			cin&gt;&gt;x[i]&gt;&gt;y[i];
+		}
+		printf(&quot;Case #%d:\n&quot;,t);
+		printf(&quot;The minimal distance is: &quot;);
+		prim();
+		printf(&quot;\n\n&quot;);
+		t++;
+	}
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[图论]奖金 | 拓扑排序]]></title>
+        <id>https://yja.hualian.host/post/tu-lun-jiang-jin-or-tuo-bu-pai-xu/</id>
+        <link href="https://yja.hualian.host/post/tu-lun-jiang-jin-or-tuo-bu-pai-xu/">
+        </link>
+        <updated>2020-07-31T08:50:12.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="描述">描述</h3>
+<p>Mr.Z心情好，决定给每位员工发奖金。公司决定以每个人本年在公司的贡献为标准来计算他们得到奖金的多少。<br>
+于是Mr.Z下令召开m方会谈。每位参加会谈的代表提出了自己的意见：“我认为员工a的奖金应该比b高！”Mr.Z决定要找出一种奖金方案，满足各位代表的意见，且同时使得总奖金数最少。每位员工奖金最少为100元。<br>
+输入</p>
+<p>第一行两个整数n,m，表示员工总数和代表数；<br>
+以下m行，每行2个整数a,b，表示某个代表认为第a号员工奖金应该比第b号员工高。<br>
+n&lt;=10000，m&lt;=20000<br>
+输出</p>
+<p>若无法找到合法方案，则输出“Poor Xed”；否则输出一个数表示最少总奖金。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>2 1<br>
+1 2</p>
+<h3 id="输出">输出</h3>
+<p>201</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>给定一个有向图，如果存在环就输出Poor Xed，否则从一个入度为0点开始一直往下走，每个点的点权刚开始都为100，每往下走当前那个点的点权就要加上当前深度，最后输出所有点权值之和。</p>
+<hr>
+<h3 id="解题思路">解题思路</h3>
+<p>假设有点a,b,c,a要比b多,b要比c多，c要比a多，这样构成了一个环，<strong>无论</strong>任意一个点为多少，都无法满足要求，所以用<strong>拓扑排序</strong>来找图里面是否有环，如果有就输出Poor Xed，否则进行求解。</p>
+<p>采用拓扑排序的思想，如果一个点<strong>入度为0</strong>，没有其他人要求比它高，就抠门只给他100就可以满足题目的要求，既然这个点的问题解决了，他所连向的点入度都减1，但那些点可能是被多个点连着，要满足要求就得选要钱最多的那个+1，但他入度还没变成1，就留到后面来解决，如果就只有一个点连着，减1后入度刚好为0，没有其他点的约束，那么那个点的工资就是前一个点+1，并且把那个点放进队列里面等待处理。</p>
+<hr>
+<p>奉上代码<br>
+不要问为什么叫hopsort，只是谐音拓扑而已s(σ°∀°)σ。</p>
+<pre><code class="language-c">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int n,m,tot,head[20002],indegree[20002];
+struct G{
+	int nex;
+	int to;
+}g[20002];
+void add(int u,int v){
+	g[++tot].nex=head[u];
+	g[tot].to=v;
+	head[u]=tot;
+	return ;
+}
+int value[10005];
+void hopsort(){
+	queue&lt;int&gt; q;
+	for(int i=1;i&lt;=n;i++){
+		if(indegree[i]==0){
+			q.push(i);
+			value[i]=100;
+		}
+	}
+	int cnt=0,ans=0;
+	while(!q.empty()){
+		int u=q.front();
+		q.pop();
+		cnt++;
+		ans+=value[u];
+		for(int i=head[u];i;i=g[i].nex){
+			int v=g[i].to;
+			indegree[v]--;
+			value[v]=max(value[v],value[u]+1);
+			if(indegree[v]==0){
+				q.push(v);
+			}
+		}
+	}
+	if(cnt==n)
+		printf(&quot;%d&quot;,ans);
+	else
+		puts(&quot;Poor Xed&quot;);
+	return ;
+}
+int main(){
+	scanf(&quot;%d %d&quot;,&amp;n,&amp;m);
+	for(int i=1;i&lt;=m;i++){
+		int u,v;
+		scanf(&quot;%d %d&quot;,&amp;u,&amp;v);
+		add(v,u);
+		indegree[u]++;
+	}
+	hopsort();
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[图论]牛跑步]]></title>
         <id>https://yja.hualian.host/post/tu-lun-niu-pao-bu/</id>

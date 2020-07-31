@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yja&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <link rel="stylesheet" href="/media/css/post.css">
+    <link rel="stylesheet" href="/media/live2d/css/live2d.css" />
+    
+</head>
+<body class=" mdui-appbar-with-toolbar  mdui-theme-primary-pink mdui-theme-accent-pink">
+<header class="mdui-toolbar mdui-color-pink mdui-appbar-fixed mdui-appbar-scroll-toolbar-hide" style="z-index: 1000">
+    <a href="javascript:;" mdui-drawer="{target: '#left-drawer',overlay:true}" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+    <span class="mdui-typo-title">Yja&#39;s blog</span>
+    <div class="mdui-toolbar-spacer"></div>
+<!--    <a href="javascript:history.go(0);" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+</header>
+
+<div class="mdui-drawer mdui-color-white mdui-drawer-full-height mdui-drawer-close" id="left-drawer">
+    <ul class="mdui-list">
+        <li class="mdui-subheader">菜单</li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/" class="mdui-list-item-content">首页</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/archives" class="mdui-list-item-content">归档</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/tags" class="mdui-list-item-content">标签</a>
+        </li>
+        
+        <li class="mdui-list-item mdui-ripple">
+            <a href="/post/about" class="mdui-list-item-content">关于</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div id="content" class="site-content">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+            <article id="post-1270" class="post-1270 post type-post status-publish format-standard hentry category-90 category-129 tag-149">
+                <header class="entry-header">
+                    <h1 class="entry-title">[图论]最小生成树模板题 | 最小生成树</h1>
+                    <p class="entry-census">发布于 2020-07-31</p>
+                    <hr>
+                </header>
+                <div class="neko">
+                    <h3 id="描述">描述</h3>
+<p>给出一个数字N，代表有N个点，然后给出这N个点的坐标。求一个最小生成树将这N个点连通起来。<br>
+这里两点间的距离为欧几里德距离<br>
+输入</p>
+<p>整个测试有多组数据<br>
+对于每组数据<br>
+第一行给出数字N，N&lt;=1000<br>
+接下来N行给点的坐标x,y.-10000 &lt;= X,Y &lt;= 10000<br>
+整个测试以0代表结束<br>
+输出</p>
+<p>输出见样例。注意：如果是多组输出数据，多组输出数据之间多一个空行。<br>
+样例</p>
+<h3 id="输入">输入</h3>
+<p>5<br>
+0 0<br>
+0 1<br>
+1 1<br>
+1 0<br>
+0.5 0.5<br>
+0</p>
+<h3 id="输出">输出</h3>
+<p>Case #1:<br>
+The minimal distance is: 2.83</p>
+<hr>
+<h2 id="题目大意">题目大意</h2>
+<p>如题，及求最小生成树，给一个n个点带边权的无向图，选n-1条边将图上所有点连接起来并使得树上所有边权之和最小。</p>
+<h2 id="解题思路">解题思路</h2>
+<p>对于求最小生成树问题，一般有<strong>prim</strong>和<strong>kruska</strong>l两种算法，本面着重讲prim算法。<br>
+prim的算法核心是维护<strong>最小生成树的一部分</strong>，从刚开始的一个点开始逐渐扩展到n个点，在每次扩展时，从已经求出最小生成树的一部分中找一个点u，从还未被选入最小生成树中的点中找一个点v，如果两点之间有连边，从<strong>未被选入最小生成树点的集合</strong>删去v，把v点加入<strong>已经生成的最小生成树的集合</strong>里面，并累加两点之间连边的权值。</p>
+<p>但如果用上面的朴素算法，每次访问1到n点中，又要从那个点开始向能走到的n个点的点进行打擂求出边权最小的加入，这要两个for循环n次才能完成，时间复杂度<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+<p><s>这么慢那学个什么，肯定是要学最快最优的那种啦</s></p>
+<p>每次对于当前处理点i，要循环n次求出离它边权最小值的点，所以可以直接用堆来维护边权最小点集合，边权越小越优先处理，这样可以保证第一次算完所有点的就一定是最小生成树<br>
+采用堆优化后时间复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>g</mi><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(nlongn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></p>
+<hr>
+<p>奉上代码</p>
+<pre><code class="language-c">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+double x[1005],y[1005];
+int n;
+bool vis[1005];
+struct node{
+	double dist;
+	int u;
+	node(double dist_,int u_){
+		dist=dist_;
+		u=u_;
+	}
+	bool operator &lt; (const node &amp;a) const {
+		return a.dist&lt;dist;
+	}
+};
+void prim(){
+	memset(vis,0,sizeof(vis));
+	double ans=0.0;
+	priority_queue&lt;node&gt; q;
+	q.push(node(0.0,1));
+	while(!q.empty()){
+		int u=q.top().u;
+		double dist=q.top().dist;
+		q.pop();
+		if(vis[u])
+			continue;
+		vis[u]=1;
+		ans+=dist;
+		for(int i=2;i&lt;=n;i++){
+			if(!vis[i]){
+				q.push(node(sqrt(pow(x[i]-x[u],2)*1.0+pow(y[i]-y[u],2)*1.0),i));
+			}
+		}
+	}
+	printf(&quot;%.2f&quot;,ans);
+	return ;
+}
+int main(){
+	int t=1;
+	while(1){
+		scanf(&quot;%d&quot;,&amp;n);
+		if(n==0){
+			return 0;
+		}
+		for(int i=1;i&lt;=n;i++){
+			cin&gt;&gt;x[i]&gt;&gt;y[i];
+		}
+		printf(&quot;Case #%d:\n&quot;,t);
+		printf(&quot;The minimal distance is: &quot;);
+		prim();
+		printf(&quot;\n\n&quot;);
+		t++;
+	}
+	return 0;
+}
+</code></pre>
+
+                </div>
+            </article>
+        </main>
+    </div>
+    <div class="doc-footer-nav mdui-color-theme">
+        <div class="mdui-container">
+            <div class="mdui-row">
+                
+                <div class="mdui-col-xs-2 mdui-col-sm-6 doc-footer-nav-left"></div>
+                
+                
+                <a href="https://yja.hualian.host/post/tu-lun-jiang-jin-or-tuo-bu-pai-xu/" class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 doc-footer-nav-right">
+                    <div class="doc-footer-nav-text">
+                        <i class="mdui-icon material-icons">arrow_forward</i>
+                        <span class="doc-footer-nav-direction">下一篇文章</span>
+                        <div class="doc-footer-nav-chapter">[图论]奖金 | 拓扑排序</div>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+    <br>
+    
+    <div class="comment"></div>
+</div>
+<footer class="mdui-container footer ">
+    <div class="head_card-offset"></div>
+    <div class="mdui-row mdui-row-gapless">
+        <div class="k-container">
+            <img width="100%" src="/media/img/skirt.png">
+        </div>
+    </div>
+
+    <div class="site-info">
+        Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+    </div>
+</footer>
+<div id="landlord" style="left:5px;bottom:0px;">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" width="500" height="560" class="live2d"></canvas>
+    <div class="live_talk_input_body">
+        <div class="live_talk_input_name_body">
+            <input name="name" type="text" class="live_talk_name white_input" id="AIuserName" autocomplete="off" placeholder="你的名字" />
+        </div>
+        <div class="live_talk_input_text_body">
+            <input name="talk" type="text" class="live_talk_talk white_input" id="AIuserText" autocomplete="off" placeholder="要和我聊什么呀？"/>
+            <button type="button" class="live_talk_send_btn" id="talk_send">发送</button>
+        </div>
+    </div>
+    <input name="live_talk" id="live_talk" value="1" type="hidden" />
+    <div class="live_ico_box">
+        <div class="live_ico_item type_info" id="showInfoBtn"></div>
+        <div class="live_ico_item type_talk" id="showTalkBtn"></div>
+        <div class="live_ico_item type_music" id="musicButton"></div>
+        <div class="live_ico_item type_youdu" id="youduButton"></div>
+        <div class="live_ico_item type_quit" id="hideButton"></div>
+        <input name="live_statu_val" id="live_statu_val" value="0" type="hidden" />
+        <audio src="" style="display:none;" id="live2d_bgm" data-bgm="0" preload="none"></audio>
+        <input name="live2dBGM" value="https://img.apa70.com/123.mp3" type="hidden">
+        <input name="live2dBGM" value="https://img.apa70.com/123.mp3" type="hidden">
+        <input id="duType" value="douqilai,l2d_caihong" type="hidden">
+    </div>
+</div>
+<div id="open_live2d">召唤伊斯特瓦尔</div>
+<script>
+    var message_Path = '/media/live2d/';//资源目录，如果目录不对请更改
+    var talkAPI = "";//如果有类似图灵机器人的聊天接口请填写接口路径
+</script>
+<!--<script src="/media/js/jquery-3.3.1.min.js"></script>-->
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/media/live2d/js/live2d.js"></script>
+<script type="text/javascript" src="/media/live2d/js/message.js"></script>
+
+</body>
+<script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    $('.comment').bind('DOMNodeInserted',()=>{
+        $('.comment').unbind()
+
+        $('.vbtn').addClass(' mdui-btn mdui-color-theme-accent mdui-ripple')
+    })
+
+    let valine = new Valine({
+        el: '.comment',
+        
+        
+        
+        path: window.location.pathname,
+        pageSize: 30,
+        avatar:'mm',
+        notify:true
+    })
+</script>
+</html>
